@@ -85,6 +85,15 @@ class BasePaymentForm extends CommerceBasePaymentForm
 	 */
 	public $merchant_reference2;
 
+    /**
+
+     * Extra merchant data fields
+     * Use Order->fields['extra_merchant_data']
+     *
+     * @var string
+     */
+    public $attachment;
+
 	/**
 	 * Klarna Order Options Array
 	 *
@@ -167,6 +176,10 @@ class BasePaymentForm extends CommerceBasePaymentForm
         $this->order_lines = $order_lines;
         $this->merchant_reference1 = $transaction->order->shortNumber;
         $this->merchant_reference2 = $transaction->order->number;
+        $this->attachment = [
+            'content_type' => 'application/vnd.klarna.internal.emd-v2+json',
+            'body' => $transaction->order->extra_merchant_data
+        ];
         $this->external_payment_methods = $this->formatMethods($gateway->external_payment_methods);
         $this->external_checkouts = $this->formatMethods($gateway->external_checkouts);
         $this->options = [
@@ -215,6 +228,7 @@ class BasePaymentForm extends CommerceBasePaymentForm
             'shipping_address' => $this->shipping_address,
             'merchant_reference1' => $this->merchant_reference1,
             'merchant_reference2' => $this->merchant_reference2,
+            'attachment' => $this->attachment,
             'options' => $this->options,
             'merchant_urls' => $this->merchant_urls
         ];

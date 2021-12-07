@@ -228,10 +228,14 @@ class BasePaymentForm extends CommerceBasePaymentForm
             'shipping_address' => $this->shipping_address,
             'merchant_reference1' => $this->merchant_reference1,
             'merchant_reference2' => $this->merchant_reference2,
-            'attachment' => $this->attachment,
             'options' => $this->options,
             'merchant_urls' => $this->merchant_urls
         ];
+
+        if ($this->attachment['body']) {
+            $body['attachment'] = $this->attachment;
+        }
+        
         if(is_array($this->external_payment_methods) && !empty($this->external_payment_methods)) $body['external_payment_methods'] = $this->external_payment_methods;
         if(is_array($this->external_checkouts) && !empty($this->external_checkouts)) $body['external_checkouts'] = $this->external_checkouts;
         return $body;
